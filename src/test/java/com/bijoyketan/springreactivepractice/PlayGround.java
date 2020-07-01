@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Slf4j
 public class PlayGround {
@@ -43,6 +44,16 @@ public class PlayGround {
 
         StepVerifier.create(fluxIterable)
                 .expectNext("Apple", "Sony", "Bose", "Caterpillar", "Dodge", "EAGames", "FA")
+                .verifyComplete();
+    }
+
+    @Test
+    public void fluxStreams() {
+        Stream<String> s = Stream.of("Dhaka", "Sylhet", "Rajshahi", "Dinajpur");
+        Flux<String> streamFlux = Flux.fromStream(s);
+
+        StepVerifier.create(streamFlux.log())
+                .expectNext("Dhaka", "Sylhet", "Rajshahi", "Dinajpur")
                 .verifyComplete();
     }
 }
