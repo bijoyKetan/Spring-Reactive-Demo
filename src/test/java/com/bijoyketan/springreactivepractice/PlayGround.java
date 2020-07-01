@@ -6,6 +6,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
+
 @Slf4j
 public class PlayGround {
 
@@ -32,5 +34,15 @@ public class PlayGround {
                 .expectNext("Lida")
                 .expectComplete()
                 .verify();
+    }
+
+    @Test
+    public void fluxTestWithIterable() {
+        Flux<String> fluxIterable = Flux.fromIterable(Arrays.asList("Apple", "Sony", "Bose", "Caterpillar", "Dodge"))
+                .concatWithValues("EAGames", "FA");
+
+        StepVerifier.create(fluxIterable)
+                .expectNext("Apple", "Sony", "Bose", "Caterpillar", "Dodge", "EAGames", "FA")
+                .verifyComplete();
     }
 }
