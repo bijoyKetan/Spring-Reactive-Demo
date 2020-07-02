@@ -1,6 +1,8 @@
 package com.bijoyketan.springreactivepractice.PlayGround;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,9 +24,24 @@ public class FluxFlatMapTest {
 
     @Test
     public void flatMapTest() {
-        System.out.println(Stream.of("Amy", "Kara", "Ben", "Jerry", "Tom", "Robyn", "John")
+        System.out.println(Stream.of("Amy", "Kara", "Ben", "Jerry", "Tom", "Robyn", "John", "Tamara", "Lida")
                 .map(this::getListFromString)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testFlux_FlatMap() {
+        var nameList = Arrays.asList("Amy", "Kara", "Ben", "Jerry", "Tom", "Robyn", "John");
+        var testFlux = Flux.fromIterable(nameList)
+                .concatWith(Flux.just("Tamara", "Lida"))
+                .map(this::getListFromString)
+                .flatMap(Flux::fromIterable);
+
+        StepVerifier.create(testFlux.log())
+                .expectSubscription()
+                .expectNext("Amy", "Student", "Kara", "Engineer", "Ben", "Police", "Jerry", "Admin", "Tom",
+                        "Trader", "Robyn", "Student", "John", "Engineer", "Tamara", "Police", "Lida", "Admin")
+                .verifyComplete();
     }
 }
