@@ -1,6 +1,7 @@
-package com.bijoyketan.springreactivepractice;
+package com.bijoyketan.springreactivepractice.PlayGround;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 @Slf4j
-public class PlayGround {
+public class FluxAndMonoTest {
 
     @Test
     public void monoTest() {
@@ -29,10 +30,10 @@ public class PlayGround {
                 .log();
 
         StepVerifier.create(flux)
-                .expectNext("Amy")
-                .expectNext("Sam")
-                .expectNext("nancy")
-                .expectNext("Lida")
+                .expectNext("Canada")
+                .expectNext("USA")
+                .expectNext("China")
+                .expectNext("Mexico")
                 .expectComplete()
                 .verify();
     }
@@ -54,6 +55,18 @@ public class PlayGround {
 
         StepVerifier.create(streamFlux.log())
                 .expectNext("Dhaka", "Sylhet", "Rajshahi", "Dinajpur")
+                .verifyComplete();
+    }
+
+    @Test
+    public void fluxFilterMap() {
+        val nameList = Arrays.asList("Apple", "Sony", "Bose", "Caterpillar", "Dodge");
+        Flux<String> nameFlux = Flux.fromIterable(nameList)
+                .filter(name -> name.toUpperCase().contains("S"))
+                .map(String::toLowerCase);
+
+        StepVerifier.create(nameFlux)
+                .expectNext("sony", "bose")
                 .verifyComplete();
     }
 }
