@@ -1,5 +1,6 @@
 package com.bijoyketan.springreactivepractice.PlayGround;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -10,6 +11,11 @@ import static com.bijoyketan.springreactivepractice.PlayGround.FluxFlatMapTest.r
 import static reactor.core.scheduler.Schedulers.parallel;
 
 public class ParallelFluxProcessing {
+
+    @BeforeEach
+    public void setUp() {
+        resetCounter();
+    }
 
     @Test
     public void testMergedFlux() {
@@ -25,7 +31,6 @@ public class ParallelFluxProcessing {
 
     @Test
     public void testMergedFlux_Parallel() {
-        resetCounter();
         var flux = Flux.fromIterable(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H"))
                 .window(2)
                 .flatMapSequential(s -> s.map(FluxFlatMapTest::getListFromString).subscribeOn(parallel()))
@@ -35,5 +40,20 @@ public class ParallelFluxProcessing {
         StepVerifier.create(flux)
                 .expectNextCount(16)
                 .verifyComplete();
+
+    }
+
+    @Test
+    //Compared to the previous method, this takes almost twice the time since there's no parallelization.
+    public void testMergedFlux_NonParallel() {
+        var flux = Flux.fromIterable(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H"))
+                .map(FluxFlatMapTest::getListFromString)
+                .flatMap(Flux::fromIterable)
+                .log();
+
+        StepVerifier.create(flux)
+                .expectNextCount(16)
+                .verifyComplete();
+
     }
 }
