@@ -11,17 +11,15 @@ import java.util.stream.IntStream;
 
 public class DataInitializer {
 
-    private List<String> names = Arrays.asList("Heinz", "Bose", "SanDisk", "Apple", "SamSung");
-    private List<String> colors = Arrays.asList("Red", "Blue", "Green", "Yellow", "Orange");
-    private List<List<String>> nearbyStores = Arrays.asList(
+    private final List<String> names = Arrays.asList("Heinz", "Bose", "SanDisk", "Apple", "SamSung");
+    private final List<String> colors = Arrays.asList("Red", "Blue", "Green", "Yellow", "Orange");
+    private final List<List<String>> nearbyStores = Arrays.asList(
             Arrays.asList("Kearny", "Harrison", "WestOrange"),
             Arrays.asList("Paterson", "Trenton"),
             Arrays.asList("Chester", "Mansfield", "Haledon"),
             Arrays.asList("JerseyCity", "Hoboken", "Newport"),
             Arrays.asList("ExchangePl", "GroveSt", "Newark")
     );
-
-    private final static int NUMBER_OF_ITEMS = 10;
     private int count = 0;
 
     public List<Item> getMultipleItems(int numberOfItems) {
@@ -44,7 +42,6 @@ public class DataInitializer {
     private int pickIndex() {
         final var inputListSize = names.size();
         count = count >= inputListSize ? 0 : count++;
-        System.out.println("Count " + count);
         return count++;
     }
 }
