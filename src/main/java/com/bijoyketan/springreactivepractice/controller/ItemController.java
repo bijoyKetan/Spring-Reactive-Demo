@@ -61,5 +61,13 @@ public class ItemController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // deletemapping - delete the item if that exists
+    // Delete mapping - delete the item if that exists
+    @DeleteMapping("/items/item")
+    public Mono<ResponseEntity<Void>> deleteItem(@RequestParam String id) {
+        return itemRepository.findById(UUID.fromString(id))
+                .flatMap(existingItem -> itemRepository.delete(existingItem)
+                        .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                )
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
