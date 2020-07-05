@@ -31,26 +31,35 @@ public class ItemController {
     }
 
     //Get one item given ID
-    @GetMapping
-    public Mono<ResponseEntity<Item>> getOneItem(String id) {
+    @GetMapping("/items/item")
+    public Mono<ResponseEntity<Item>> getOneItem(@RequestParam String id) {
         return itemRepository.findById(UUID.fromString(id))
                 .map(item -> new ResponseEntity<>(item, HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Post mapping - create an item
+    // Create an item
     @PostMapping("/items")
-    @ResponseStatus(HttpStatus.CREATED)
     public Mono<ResponseEntity<Item>> createItem(@RequestBody Item item) {
-        if (!itemRepository.findById(item.getProductID()).equals(Mono.empty())) {
-            return null;
-        } else {
-
-            return itemRepository.save(item)
-                    .map(createdItem -> new ResponseEntity<>(createdItem, HttpStatus.CREATED));
-        }
+        return itemRepository.save(item)
+                .map(createdItem -> new ResponseEntity<>(createdItem, HttpStatus.CREATED));
     }
 
-    // putmapping - modify and existing item otherwise create it
+    // Put mapping - modify and existing item otherwise create it
+    @PutMapping("/items/item")
+    public Mono<ResponseEntity<Item>> updateItem(@RequestBody Item item) {
+        return itemRepository.findById(item.getProductID())
+                .flatMap(existingItem -> {
+                    item.setColor(existingItem.getColor());
+                    item.setName(existingItem.getName());
+                    item.setPrice(existingItem.getPrice());
+                    item.setNearbyStores(existingItem.getNearbyStores());
+                    item.setYearFirstAvailable(existingItem.getYearFirstAvailable());
+                    return itemRepository.save(item);
+                })
+                .map(updatedItem -> new ResponseEntity<>(updatedItem, HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     // deletemapping - delete the item if that exists
 }
