@@ -50,12 +50,12 @@ public class ItemController {
     public Mono<ResponseEntity<Item>> updateItem(@RequestBody Item item) {
         return itemRepository.findById(item.getProductID())
                 .flatMap(existingItem -> {
-                    item.setColor(existingItem.getColor());
-                    item.setName(existingItem.getName());
-                    item.setPrice(existingItem.getPrice());
-                    item.setNearbyStores(existingItem.getNearbyStores());
-                    item.setYearFirstAvailable(existingItem.getYearFirstAvailable());
-                    return itemRepository.save(item);
+                    existingItem.setColor(item.getColor());
+                    existingItem.setName(item.getName());
+                    existingItem.setPrice(item.getPrice());
+                    existingItem.setNearbyStores(item.getNearbyStores());
+                    existingItem.setYearFirstAvailable(item.getYearFirstAvailable());
+                    return itemRepository.save(existingItem);
                 })
                 .map(updatedItem -> new ResponseEntity<>(updatedItem, HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
