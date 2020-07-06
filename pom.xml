@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bijoyketan</groupId>
-    <artifactId>spring-reactive-practice</artifactId>
+    <artifactId>spring-reactive-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-reactive-practice</name>
+    <name>spring-reactive-demo</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
