@@ -1,1 +1,1 @@
-# spring-reactive-practice
+# A simple Reactive Spring demo app
