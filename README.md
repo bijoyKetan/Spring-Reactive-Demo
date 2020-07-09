@@ -1,4 +1,4 @@
-# A simple Reactive Spring demo app
+# Reactive Spring Demo App
 
 ---
 
