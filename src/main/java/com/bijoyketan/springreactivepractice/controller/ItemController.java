@@ -25,6 +25,7 @@ public class ItemController {
     }
 
     //Find all items asynchronously
+    //Test code push for pushing image to DockerHub
     @GetMapping("/items")
     public Flux<Item> getAllItems() {
         return itemRepository.findAll();
