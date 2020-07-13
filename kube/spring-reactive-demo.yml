@@ -25,3 +25,15 @@ spec:
             - name: MINIO_HOST
               value: minio
           imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-reactive-demo
+spec:
+  selector:
+    app: spring-reactive-demo
+  ports:
+    - port: 90
+      targetPort: 9090
+  type: LoadBalancer
