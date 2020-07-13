@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-reactive-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-reactive-demo
+  template:
+    metadata:
+      labels:
+        app: spring-reactive-demo
+    spec:
+      containers:
+        - name: app
+          image: ketanbd/spring-reactive-poc:1.0.0
+          ports:
+            - containerPort: 9090
+          env:
+            - name: MINIO_ACCESS_KEY
+              value: mykey
+            - name: MINIO_SECRET_KEY
+              value: mysecret
+            - name: MINIO_HOST
+              value: minio
+          imagePullPolicy: Always
